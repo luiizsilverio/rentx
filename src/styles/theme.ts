@@ -1,10 +1,11 @@
 export default {
   colors: {
-    header: '#1b1bf',
+    header: '#1b1b1f',
     background_primary: '#f4f5f6',
     background_secondary: '#ffffff',
     text: '#7a7a80',
     text_detail: '#a4aeb3',
+    title: '#7a7a80',
     line: '#ebebf0',
     main: '#dc1637',
     main_light: '#fdedef',
