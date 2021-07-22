@@ -4,10 +4,10 @@ import { RFValue } from 'react-native-responsive-fontsize'
 
 import Logo from '../../assets/logo.svg'
 import { Car } from '../../components/Car'
-import { Container, Header, HeaderContent, TotalCars } from './styles'
+import { Container, Header, HeaderContent, TotalCars, CarList } from './styles'
 
 export function Home(){
-  const carData1 = {
+  const carData = {
     brand: 'Audi',
     name: 'RS 5 Coupé',
     rent: {
@@ -15,15 +15,6 @@ export function Home(){
       price: 120
     },
     thumbnail: 'https://production.autoforce.com/uploads/version/profile_image/3188/model_main_comprar-tiptronic_87272c1ff1.png'
-  }
-  const carData2 = {
-    brand: 'Porshe',
-    name: 'Panamera',
-    rent: {
-      period: 'ao dia',
-      price: 340
-    },
-    thumbnail: 'https://e7.pngegg.com/pngimages/464/370/png-clipart-porsche-porsche.png'
   }
 
   return (
@@ -45,8 +36,12 @@ export function Home(){
         </HeaderContent>
       </Header>
 
-      <Car data={ carData1 } />
-      <Car data={ carData2 } />
+      <CarList
+        data={[1, 2, 3, 4, 5, 6, 7]}
+        keyExtractor={item => String(item)}
+        renderItem={({ item }) => <Car data={ carData } />}        
+      />
+
     </Container>
   )
 }
