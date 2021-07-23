@@ -3,6 +3,7 @@ import React from 'react'
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
 import { Acessory } from '../../components/Acessory'
+import { Button } from '../../components/Button'
 
 import SpeedSvg from '../../assets/speed.svg'
 import AccelerationSvg from '../../assets/acceleration.svg'
@@ -24,7 +25,8 @@ import {
   Period,
   Price,
   About,
-  Acessories
+  Acessories,
+  Footer
   } from './styles'
 
 export function CarDetails() {
@@ -67,6 +69,9 @@ export function CarDetails() {
         </About>
       </Content>
 
+      <Footer>
+        <Button title="Confirmar" />
+      </Footer>
     </Container>
   )
 }
