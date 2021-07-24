@@ -1,4 +1,7 @@
 import React from 'react'
+import { RFValue } from 'react-native-responsive-fontsize'
+import { useTheme } from 'styled-components'
+import { Feather } from '@expo/vector-icons'
 
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
@@ -24,12 +27,17 @@ import {
   Rent,
   Period,
   Price,
-  About,
   Acessories,
-  Footer
+  Footer,
+  RentalPeriod,
+  CalendarIcon,
+  DateInfo,
+  DateTitle,
+  DateValue,
   } from './styles'
 
-export function CarDetails() {
+export function ScheduleDetails() {
+  const theme = useTheme()
   return (
     <Container>    
       <Header>
@@ -62,12 +70,32 @@ export function CarDetails() {
           <Acessory name="Auto"      icon={ExchangeSvg} />
           <Acessory name="2 pessoas" icon={PeopleSvg} />
         </Acessories>
+        
+        <RentalPeriod>
+          <CalendarIcon>
+            <Feather 
+              name="calendar"
+              size={RFValue(24)}
+              color={theme.colors.shape}
+            />
+          </CalendarIcon>
 
-        <About>
-          Este é automóvel desportivo. Surgiu do lendário 
-          touro de lide indultado na praça Real Maestranza de Sevilla. 
-          É um belíssimo carro para quem gosta de acelerar.
-        </About>
+          <DateInfo>
+            <DateTitle>de</DateTitle>
+            <DateValue>18/06/2021</DateValue>
+          </DateInfo>
+
+          <Feather 
+            name="chevron-right"
+            size={RFValue(14)}
+            color={theme.colors.text}
+          />
+
+          <DateInfo>    
+            <DateTitle>até</DateTitle>
+            <DateValue>19/06/2021</DateValue>
+          </DateInfo>
+        </RentalPeriod>
       </Content>
 
       <Footer>
