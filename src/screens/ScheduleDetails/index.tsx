@@ -34,6 +34,11 @@ import {
   DateInfo,
   DateTitle,
   DateValue,
+  RentalPrice,        
+  RentalPriceLabel,
+  RentalPriceDetails,
+  RentalPriceTotal,
+  RentalPriceQuota,
   } from './styles'
 
 export function ScheduleDetails() {
@@ -96,6 +101,14 @@ export function ScheduleDetails() {
             <DateValue>19/06/2021</DateValue>
           </DateInfo>
         </RentalPeriod>
+       
+        <RentalPrice>
+          <RentalPriceLabel>total</RentalPriceLabel>
+          <RentalPriceDetails>
+            <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>            
+          <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+          </RentalPriceDetails>
+        </RentalPrice>
       </Content>
 
       <Footer>
