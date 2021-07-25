@@ -18,6 +18,7 @@ import { Home } from './src/screens/Home'
 import { CarDetails } from './src/screens/CarDetails'
 import { Schedule } from './src/screens/Schedule'
 import { ScheduleDetails } from './src/screens/ScheduleDetails';
+import { ScheduleCompleted } from './src/screens/ScheduleCompleted';
 
 import theme from './src/styles/theme'
 
@@ -37,7 +38,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>            
-      <ScheduleDetails />
+      <ScheduleCompleted />
     </ThemeProvider>
   );
 }
