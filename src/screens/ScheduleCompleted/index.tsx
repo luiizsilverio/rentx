@@ -1,5 +1,6 @@
 import React from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useWindowDimensions, StatusBar } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 import LogoSvg from '../../assets/logo_background_gray.svg'
 import DoneSvg from '../../assets/done.svg'
@@ -10,9 +11,20 @@ import { Container, Content, Title, Message, Footer } from './styles'
 
 export function ScheduleCompleted(){
   const { width } = useWindowDimensions()
+  const navigation = useNavigation()
+
+  function handleClick() {
+    navigation.navigate('Home')
+  }
 
   return (
     <Container>
+      <StatusBar
+        barStyle="light-content" 
+        backgroundColor="transparent"
+        translucent
+      />
+      
       <LogoSvg width={width} />
 
       <Content>
@@ -27,7 +39,10 @@ export function ScheduleCompleted(){
       </Content>
 
       <Footer>
-        <ConfirmButton title="OK" />
+        <ConfirmButton 
+          title="OK" 
+          onPress={handleClick}
+        />
       </Footer>
     </Container>
   )
