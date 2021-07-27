@@ -1,10 +1,11 @@
 import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
 import { Acessory } from '../../components/Acessory'
 import { Button } from '../../components/Button'
+import { CarData } from '../../dtos'
 
 import SpeedSvg from '../../assets/speed.svg'
 import AccelerationSvg from '../../assets/acceleration.svg'
@@ -30,9 +31,15 @@ import {
   Footer
   } from './styles'
 
+interface Params {
+  car: CarData
+}
+
 export function CarDetails() {
   const navigation = useNavigation()
-
+  const route = useRoute()
+  const { car } = route.params as Params
+  
   function handleRental() {
     navigation.navigate('Schedule')
   }
@@ -40,41 +47,46 @@ export function CarDetails() {
   return (
     <Container>    
       <Header>
-        <BackButton onPress={() => {}} />      
+        <BackButton />      
       </Header>
 
       <SliderContainer>
-        <ImageSlider imagesUrl= {['https://production.autoforce.com/uploads/version/profile_image/3188/model_main_comprar-tiptronic_87272c1ff1.png']}/>
+        <ImageSlider imagesUrl= { car.photos }/>
       </SliderContainer>
 
       <Content>
         <Details>
           <Description>
-            <Brand>Lamborghini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{ car.brand }</Brand>
+            <Name>{ car.name }</Name>
           </Description>
         
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 580</Price>
+            <Period>{ car.rent.period }</Period>
+            <Price>R$ { car.rent.price }</Price>
           </Rent>
         </Details>
 
 
         <Acessories>
-          <Acessory name="380Km/h"   icon={SpeedSvg} />
+          {
+            car.accessories.map(accessory => (
+              <Acessory
+                key={ accessory.type }
+                name={ accessory.name }
+                icon={ SpeedSvg }
+              />
+            ))
+          }
+          {/* <Acessory name="380Km/h"   icon={SpeedSvg} />
           <Acessory name="3.2s"      icon={AccelerationSvg} />
           <Acessory name="880 HP"    icon={ForceSvg} />
           <Acessory name="Gasolina"  icon={GasolineSvg} />
           <Acessory name="Auto"      icon={ExchangeSvg} />
-          <Acessory name="2 pessoas" icon={PeopleSvg} />
+          <Acessory name="2 pessoas" icon={PeopleSvg} /> */}
         </Acessories>
 
-        <About>
-          Este é automóvel desportivo. Surgiu do lendário 
-          touro de lide indultado na praça Real Maestranza de Sevilla. 
-          É um belíssimo carro para quem gosta de acelerar.
-        </About>
+        <About>{ car.about }</About>
       </Content>
 
       <Footer>
