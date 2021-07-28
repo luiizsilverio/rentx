@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { format } from 'date-fns'
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
-import { MyCalendar } from '../../components/MyCalendar'
+import { generateInterval } from '../../utils/generateInterval'
+
+import { 
+  MyCalendar, 
+  DayProps,
+  MarkedDateProps
+} from '../../components/MyCalendar'
 
 import ArrowSvg from '../../assets/arrow.svg'
 
@@ -20,11 +27,49 @@ import {
   Footer
   } from './styles'
 
+interface RentalPeriod {
+  start: number
+  startFormatted: string
+  end: number
+  endFormatted: string
+}
+
 export function Schedule(){
+  const [lastSelDate, setLastSelDate] = useState<DayProps>({} as DayProps)
+  const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps)
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod)
+
   const navigation = useNavigation()
 
   function handleClick() {
     navigation.navigate('ScheduleDetails')
+  }
+
+  function handleSelectDate(date: DayProps) {
+    let start = !lastSelDate.timestamp ? date : lastSelDate
+    let end = date
+
+    if (start.timestamp > end.timestamp) {
+      start = end
+      end = start
+    }
+
+    setLastSelDate(end)
+
+    const interval = generateInterval(start, end)
+    setMarkedDates(interval)
+
+    const datas = Object.keys(interval)
+    const firstDate = datas[0]
+    const endDate = datas[datas.length - 1]
+
+    setRentalPeriod({
+      start: start.timestamp,
+      end: end.timestamp,
+      startFormatted: format(new Date(firstDate), 'dd/MM/yyyy'),
+      endFormatted: format(new Date(endDate), 'dd/MM/yyyy'),
+    })
+
   }
   
   return (
@@ -36,7 +81,7 @@ export function Schedule(){
       />
       
       <Header>
-        <BackButton color="white" onPress={() => {}} />     
+        <BackButton color="white" />     
 
         <Title>
           Escolha uma {'\n'}
@@ -47,8 +92,8 @@ export function Schedule(){
         <Period>
           <DateInfo>
             <DateTitle>de</DateTitle>
-            <DateValue selected={true}>
-              18/06/2021
+            <DateValue selected={ !!rentalPeriod.startFormatted }>
+              { rentalPeriod.startFormatted }
             </DateValue>
           </DateInfo>
           
@@ -56,8 +101,8 @@ export function Schedule(){
 
           <DateInfo>
             <DateTitle>até</DateTitle>
-            <DateValue selected={true}>
-              20/06/2021
+            <DateValue selected={ !!rentalPeriod.endFormatted }>
+            { rentalPeriod.endFormatted }
             </DateValue>
           </DateInfo>
         </Period>
@@ -65,11 +110,14 @@ export function Schedule(){
       </Header>
 
       <Content>
-        <MyCalendar />
+        <MyCalendar 
+          markedDates={markedDates}
+          onDayPress={handleSelectDate}
+        />
       </Content>
       
       <Footer>
-        <Button 
+        <Button                   
           title="Confirmar" 
           onPress={handleClick} 
         />          
