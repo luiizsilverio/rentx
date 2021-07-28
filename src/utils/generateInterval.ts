@@ -1,17 +1,16 @@
-import { eachDayOfInterval, format } from 'date-fns'
+import { addDays } from 'date-fns'
 
-import { MarkedPeriodProps, DayProps } from '../components/MyCalendar'
+import { MarkedDateProps, DayProps } from '../components/MyCalendar'
 import theme from '../styles/theme'
 
 export function generateInterval(start: DayProps, end: DayProps) {
-  let interval: MarkedPeriodProps = {}
+  let interval: MarkedDateProps = {}
+  let dt1 = new Date(start.timestamp)
+  const dt2 = new Date(end.timestamp)
+  let data = dt1
 
-  eachDayOfInterval({ 
-    start: new Date(start.timestamp),
-    end: new Date(end.timestamp)
-  })
-  .forEach(item => {
-    const date = format(item, 'yyyy-MM-dd')
+  while (data <= dt2) {
+    const date = data.toISOString().slice(0, 10)
 
     interval = {
       ...interval, 
@@ -22,11 +21,12 @@ export function generateInterval(start: DayProps, end: DayProps) {
 
          textColor: start.dateString === date || end.dateString === date
          ? theme.colors.main_light
-         : theme.colors.main ,
+         : theme.colors.main
       }
     }
-  })
 
+    data = addDays(data, 1)
+  }
+  
   return interval
 }
-5:50

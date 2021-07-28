@@ -57,12 +57,15 @@ export function Schedule(){
     setLastSelDate(end)
 
     const interval = generateInterval(start, end)
+    console.log('start, end:', start, end)
     setMarkedDates(interval)
-
+    console.log('interval:', interval)
     const datas = Object.keys(interval)
     const firstDate = datas[0]
     const endDate = datas[datas.length - 1]
 
+    // console.log('firstDate:', datas[0])
+    // console.log('endDate:', datas[datas.length - 1])
     setRentalPeriod({
       start: start.timestamp,
       end: end.timestamp,
