@@ -1,4 +1,5 @@
 import React from 'react'
+import { Alert } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
@@ -11,6 +12,7 @@ import { Button } from '../../components/Button'
 import { CarData } from '../../dtos'
 import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 import { formatDate } from '../../utils/generateInterval'
+import api from '../../services/api'
 
 import { 
   Container, 
@@ -54,8 +56,21 @@ export function ScheduleDetails() {
 
   const rentTotal = Number(dates.length * car.rent.price)
   
-  function handleClick() {
-    navigation.navigate('ScheduleCompleted')
+  async function handleConfirmRental() {
+    console.log('car.id:', car.id)
+    const schedules = await api.get(`/schedules_bycars/${car.id}`)
+
+    const unavailable_dates = [
+      ...schedules.data.unavailable_dates,
+      ...dates
+    ]
+
+    api.put(`/schedules_bycars/${car.id}`, {
+      id: car.id,
+      unavailable_dates
+    })
+    .then(() => navigation.navigate('ScheduleCompleted'))
+    .catch(() => Alert.alert('Não foi possível confirmar o agendamento.'))    
   }
 
   return (
@@ -132,10 +147,9 @@ export function ScheduleDetails() {
         <Button 
           title="Alugar agora" 
           color={theme.colors.success}
-          onPress={handleClick} 
+          onPress={handleConfirmRental} 
         />
       </Footer>
     </Container>
   )
 }
-11:06

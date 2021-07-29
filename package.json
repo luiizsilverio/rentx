@@ -5,7 +5,7 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "server": "json-server -d 750 -w --host 192.168.100.8 -p 3333 ./src/services/server.json",
+    "server": "json-server -d 750 -w --host 192.168.100.3 -p 3333 ./src/services/server.json",
     "test": "jest"
   },
   "dependencies": {
