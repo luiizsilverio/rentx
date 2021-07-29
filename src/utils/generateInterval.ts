@@ -10,8 +10,8 @@ export function generateInterval(start: DayProps, end: DayProps) {
   let data = dt1
 
   while (data <= dt2) {
-    const date = data.toISOString().slice(0, 10)
-
+    const date = data.toISOString().slice(0, 10)    
+    
     interval = {
       ...interval, 
       [date]: {
@@ -29,4 +29,9 @@ export function generateInterval(start: DayProps, end: DayProps) {
   }
   
   return interval
+}
+
+export function formatDate(data: string) {
+  const myDate = data.split("-");
+  return `${myDate[2]}/${myDate[1]}/${myDate[0]}`
 }

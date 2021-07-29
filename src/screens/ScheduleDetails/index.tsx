@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useTheme } from 'styled-components'
 import { Feather } from '@expo/vector-icons'
@@ -8,13 +8,9 @@ import { BackButton } from '../../components/BackButton'
 import { ImageSlider } from '../../components/ImageSlider'
 import { Acessory } from '../../components/Acessory'
 import { Button } from '../../components/Button'
-
-import SpeedSvg from '../../assets/speed.svg'
-import AccelerationSvg from '../../assets/acceleration.svg'
-import ForceSvg from '../../assets/force.svg'
-import GasolineSvg from '../../assets/gasoline.svg'
-import ExchangeSvg from '../../assets/exchange.svg'
-import PeopleSvg from '../../assets/people.svg'
+import { CarData } from '../../dtos'
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
+import { formatDate } from '../../utils/generateInterval'
 
 import { 
   Container, 
@@ -42,10 +38,22 @@ import {
   RentalPriceQuota,
   } from './styles'
 
-export function ScheduleDetails() {
-  const navigation = useNavigation()
-  const theme = useTheme()
+interface Params {
+  car: CarData,
+  dates: string[]
+}
 
+export function ScheduleDetails() {
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const route = useRoute()
+  
+  const { car, dates } = route.params as Params
+  const dt1 = formatDate(dates[0])
+  const dt2 = formatDate(dates[dates.length - 1])
+
+  const rentTotal = Number(dates.length * car.rent.price)
+  
   function handleClick() {
     navigation.navigate('ScheduleCompleted')
   }
@@ -57,30 +65,32 @@ export function ScheduleDetails() {
       </Header>
 
       <SliderContainer>
-        <ImageSlider imagesUrl= {['https://production.autoforce.com/uploads/version/profile_image/3188/model_main_comprar-tiptronic_87272c1ff1.png']}/>
+        <ImageSlider imagesUrl={car.photos}/>
       </SliderContainer>
 
       <Content>
         <Details>
           <Description>
-            <Brand>Lamborghini</Brand>
-            <Name>Huracan</Name>
+            <Brand>{car.brand}</Brand>
+            <Name>{car.name}</Name>
           </Description>
         
           <Rent>
-            <Period>Ao dia</Period>
-            <Price>R$ 580</Price>
+            <Period>{car.rent.period}</Period>
+            <Price>R$ {car.rent.price}</Price>
           </Rent>
         </Details>
 
-
         <Acessories>
-          <Acessory name="380Km/h"   icon={SpeedSvg} />
-          <Acessory name="3.2s"      icon={AccelerationSvg} />
-          <Acessory name="880 HP"    icon={ForceSvg} />
-          <Acessory name="Gasolina"  icon={GasolineSvg} />
-          <Acessory name="Auto"      icon={ExchangeSvg} />
-          <Acessory name="2 pessoas" icon={PeopleSvg} />
+          {
+            car.accessories.map(accessory => (
+              <Acessory 
+                key={accessory.type}
+                name={accessory.name} 
+                icon={getAccessoryIcon(accessory.type)}
+              />
+            ))
+          }
         </Acessories>
         
         <RentalPeriod>
@@ -94,7 +104,7 @@ export function ScheduleDetails() {
 
           <DateInfo>
             <DateTitle>de</DateTitle>
-            <DateValue>18/06/2021</DateValue>
+            <DateValue>{ dt1 }</DateValue>
           </DateInfo>
 
           <Feather 
@@ -105,15 +115,15 @@ export function ScheduleDetails() {
 
           <DateInfo>    
             <DateTitle>até</DateTitle>
-            <DateValue>19/06/2021</DateValue>
+            <DateValue>{ dt2 }</DateValue>
           </DateInfo>
         </RentalPeriod>
        
         <RentalPrice>
           <RentalPriceLabel>total</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>R$ 580 x3 diárias</RentalPriceQuota>            
-          <RentalPriceTotal>R$ 2.900</RentalPriceTotal>
+            <RentalPriceQuota>{`R$ ${car.rent.price} x${dates.length} diárias`}</RentalPriceQuota>            
+          <RentalPriceTotal>R$ { rentTotal }</RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
       </Content>
@@ -128,3 +138,4 @@ export function ScheduleDetails() {
     </Container>
   )
 }
+11:06

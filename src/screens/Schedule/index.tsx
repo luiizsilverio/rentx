@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { StatusBar } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { format } from 'date-fns'
+import { StatusBar, Alert } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { BackButton } from '../../components/BackButton'
 import { Button } from '../../components/Button'
-import { generateInterval } from '../../utils/generateInterval'
+import { generateInterval, formatDate } from '../../utils/generateInterval'
+import { CarData } from '../../dtos'
 
 import { 
   MyCalendar, 
@@ -34,15 +34,28 @@ interface RentalPeriod {
   endFormatted: string
 }
 
+interface Params {
+  car: CarData
+}
+
 export function Schedule(){
   const [lastSelDate, setLastSelDate] = useState<DayProps>({} as DayProps)
   const [markedDates, setMarkedDates] = useState<MarkedDateProps>({} as MarkedDateProps)
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod)
 
   const navigation = useNavigation()
+  const route = useRoute()
+  const { car } = route.params as Params
 
-  function handleClick() {
-    navigation.navigate('ScheduleDetails')
+  function handleConfirmRental() {
+    if (!rentalPeriod.start || !rentalPeriod.end) {
+      Alert.alert('Selecione o período para alugar.')
+    } else {
+      navigation.navigate('ScheduleDetails', {
+        car,
+        dates: Object.keys(markedDates)
+      })
+    }
   }
 
   function handleSelectDate(date: DayProps) {
@@ -57,22 +70,19 @@ export function Schedule(){
     setLastSelDate(end)
 
     const interval = generateInterval(start, end)
-    console.log('start, end:', start, end)
+    
     setMarkedDates(interval)
-    console.log('interval:', interval)
+    
     const datas = Object.keys(interval)
     const firstDate = datas[0]
     const endDate = datas[datas.length - 1]
 
-    // console.log('firstDate:', datas[0])
-    // console.log('endDate:', datas[datas.length - 1])
     setRentalPeriod({
       start: start.timestamp,
       end: end.timestamp,
-      startFormatted: format(new Date(firstDate), 'dd/MM/yyyy'),
-      endFormatted: format(new Date(endDate), 'dd/MM/yyyy'),
+      startFormatted: formatDate(firstDate),
+      endFormatted: formatDate(endDate)
     })
-
   }
   
   return (
@@ -122,7 +132,7 @@ export function Schedule(){
       <Footer>
         <Button                   
           title="Confirmar" 
-          onPress={handleClick} 
+          onPress={handleConfirmRental} 
         />          
       </Footer>
       
