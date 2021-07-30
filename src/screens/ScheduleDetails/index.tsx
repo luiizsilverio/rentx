@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Alert } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
@@ -46,6 +46,7 @@ interface Params {
 }
 
 export function ScheduleDetails() {
+  const [loading, setLoading] = useState(false)
   const theme = useTheme()
   const navigation = useNavigation()
   const route = useRoute()
@@ -57,7 +58,8 @@ export function ScheduleDetails() {
   const rentTotal = Number(dates.length * car.rent.price)
   
   async function handleConfirmRental() {
-    console.log('car.id:', car.id)
+    setLoading(true)
+
     const schedules = await api.get(`/schedules_bycars/${car.id}`)
 
     const unavailable_dates = [
@@ -68,7 +70,9 @@ export function ScheduleDetails() {
     // usuário fixo 1 - implementar autenticação
     api.post('/schedules_byuser', {
       user_id: 1,
-      car
+      car,
+      startDate: dt1,
+      endDate: dt2
     })
 
     api.put(`/schedules_bycars/${car.id}`, {
@@ -76,7 +80,10 @@ export function ScheduleDetails() {
       unavailable_dates
     })
     .then(() => navigation.navigate('ScheduleCompleted'))
-    .catch(() => Alert.alert('Não foi possível confirmar o agendamento.'))    
+    .catch(() => {
+      setLoading(false)
+      Alert.alert('Não foi possível confirmar o agendamento.')
+    })
   }
 
   return (
@@ -154,6 +161,8 @@ export function ScheduleDetails() {
           title="Alugar agora" 
           color={theme.colors.success}
           onPress={handleConfirmRental} 
+          enabled={!loading}
+          loading={loading}
         />
       </Footer>
     </Container>

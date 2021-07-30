@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StatusBar, Alert } from 'react-native'
+import { StatusBar } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { BackButton } from '../../components/BackButton'
@@ -49,7 +49,7 @@ export function Schedule(){
 
   function handleConfirmRental() {
     if (!rentalPeriod.start || !rentalPeriod.end) {
-      Alert.alert('Selecione o período para alugar.')
+      //Alert.alert('Selecione o período para alugar.')
     } else {
       navigation.navigate('ScheduleDetails', {
         car,
@@ -131,8 +131,9 @@ export function Schedule(){
       
       <Footer>
         <Button                   
-          title="Confirmar" 
+          title="Confirmar"           
           onPress={handleConfirmRental} 
+          enabled={!!rentalPeriod.endFormatted}
         />          
       </Footer>
       

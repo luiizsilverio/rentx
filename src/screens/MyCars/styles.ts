@@ -63,18 +63,28 @@ export const CarWrapper = styled.View`
 `;
 
 export const CarFooter = styled.View`
-  width: 100%auto;
+  width: 100%;
   padding: 12px;
-  
+  margin-top: -10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${props => props.theme.colors.background_secondary};
+
 `;
 
 export const CarFooterTitle = styled.Text`
+  color: ${props => props.theme.colors.text_detail};
+  font-family: ${props => props.theme.fonts.secondary_500};
+  font-size: ${RFValue(12)}px;
 `;
 
-export const CarFooterPeriod = styled.Text`
+export const CarFooterPeriod = styled.View`
+  flex-direction: row;
 `;
 
 export const CarFooterDate = styled.Text`
+  color: ${props => props.theme.colors.title};
+  font-family: ${props => props.theme.fonts.primary_400};
+  font-size: ${RFValue(13)}px;
 `;
-
-4:40
