@@ -1,36 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
-
+import BrandSvg from '../../assets/brand.svg'
+import LogoSvg from '../../assets/logo.svg'
 import { Container } from './styles'
 
 export function Splash(){
-  const animation = useSharedValue(0)
-
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: animation.value }]
+  const navigation = useNavigation()
+  
+  useState(() => {
+    function startApp() {
+      navigation.navigate('Home')
     }
+
+    setTimeout(() => {
+      startApp()
+    }, 2000);
   })
 
   return (
     <Container>
-      <Animated.View style={[styles.box, animatedStyles]} />
-
-      <Button 
-        title="Mover"
-        onPress={() => {}}
-      />
-
+      <LogoSvg width={180} height={20} />
     </Container>
   )
 }
-
-const styles = StyleSheet.create({
-  box: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'red'
-  }
-})
