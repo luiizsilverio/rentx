@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import BrandSvg from '../../assets/brand.svg'
+// import BrandSvg from '../../assets/brand.svg'
 import LogoSvg from '../../assets/logo.svg'
 import { Container } from './styles'
 
