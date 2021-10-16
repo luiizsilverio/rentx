@@ -1,4 +1,10 @@
-# Rentx
+<table>
+  <tr>
+    <td><img src="https://github.com/luiizsilverio/rentx/blob/main/src/assets/logo.svg" /></td>
+    <td><h1>RentX</h1></td>
+  </tr>
+</table>
+
 ## Conteúdo
 * [Sobre o Projeto](#sobre-o-projeto)
 * [Tecnologias](#hammer_and_wrench-tecnologias)
